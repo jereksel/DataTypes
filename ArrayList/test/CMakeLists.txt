@@ -1,4 +1,4 @@
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -O2")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -O2")
 
 add_executable(ArrayListTest main.c)
 
