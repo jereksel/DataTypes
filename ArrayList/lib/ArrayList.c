@@ -58,13 +58,7 @@ void list_clear(ArrayList *list)
 
 }
 
-
-void list_delete_item()
-{
-//TODO: IMPLEMENT
-}
-
-void list_delete_id(ArrayList *list, int id)
+void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void*))
 {
 
 	if (id >= list->current_size)
@@ -72,7 +66,7 @@ void list_delete_id(ArrayList *list, int id)
 		return;
 	}
 
-	free(list->stuff[id]);
+	(*remover)(list->stuff[id]);
 
 	for (int i = id; i < list->current_size; i++)
 	{
@@ -82,3 +76,13 @@ void list_delete_id(ArrayList *list, int id)
 	list->current_size--;
 
 }
+
+void basicRemover(void* item) {
+	free(item);
+}
+
+
+void list_delete_id(ArrayList *list, int id) {
+	list_delete_id_with_remover(list, id, basicRemover);
+}
+
