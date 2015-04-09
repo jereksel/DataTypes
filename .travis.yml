@@ -12,4 +12,5 @@ before_install:
 install: sudo apt-get install libXxf86vm-dev cmake
 script:
   - mkdir build && cd build && cmake ../ && make && cd ..
+  - chmod +x script/test.sh
   - ./script/test.sh
