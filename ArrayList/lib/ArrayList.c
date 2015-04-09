@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "ArrayList.h"
 
-#define STEP 1
+#define STEP 5
 
 ArrayList *list_create()
 {
