@@ -12,12 +12,13 @@ typedef struct arraylist
 } LIST;
 
 ArrayList *list_create();
-void list_add(ArrayList *list, void* item);
-void* list_get(ArrayList *list, int id);
-int list_find(ArrayList *list, void* item);
+void list_add(ArrayList *list, void *item);
+void *list_get(ArrayList *list, int id);
+int list_find(ArrayList *list, void *item);
 void list_clear(ArrayList *list);
+void list_clear_with_remover(ArrayList *list, void (*remover)(void *));
 void list_delete_id(ArrayList *list, int id);
-void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void*));
+void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void *));
 
 
 #endif

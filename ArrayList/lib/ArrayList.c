@@ -3,6 +3,11 @@
 
 #define STEP 5
 
+void basicRemover(void *item)
+{
+	free(item);
+}
+
 ArrayList *list_create()
 {
 	ArrayList *list = malloc(sizeof(ArrayList));
@@ -44,12 +49,13 @@ void *list_get(ArrayList *list, int id)
 	return list->stuff[id];
 }
 
-void list_clear(ArrayList *list)
+
+void list_clear_with_remover(ArrayList *list, void (*remover)(void *))
 {
 
 	for (int i = 0; i < list->current_size; i++)
 	{
-		free(list->stuff[i]);
+		remover(list->stuff[i]);
 	}
 
 	list->current_size = 0;
@@ -58,7 +64,12 @@ void list_clear(ArrayList *list)
 
 }
 
-void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void*))
+void list_clear(ArrayList *list)
+{
+	list_clear_with_remover(list, basicRemover);
+}
+
+void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void *))
 {
 
 	if (id >= list->current_size)
@@ -66,7 +77,7 @@ void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void*)
 		return;
 	}
 
-	(*remover)(list->stuff[id]);
+	remover(list->stuff[id]);
 
 	for (int i = id; i < list->current_size; i++)
 	{
@@ -77,12 +88,9 @@ void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void*)
 
 }
 
-void basicRemover(void* item) {
-	free(item);
-}
 
-
-void list_delete_id(ArrayList *list, int id) {
+void list_delete_id(ArrayList *list, int id)
+{
 	list_delete_id_with_remover(list, id, basicRemover);
 }
 
