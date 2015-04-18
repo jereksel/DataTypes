@@ -8,6 +8,11 @@ void basicRemover(void *item)
 	free(item);
 }
 
+void resizeArray(ArrayList *list)
+{
+	list->stuff = realloc(list->stuff, sizeof(void *) * list->max_size);
+}
+
 ArrayList *list_create()
 {
 	ArrayList *list = malloc(sizeof(ArrayList));
@@ -20,10 +25,10 @@ ArrayList *list_create()
 
 void list_add(ArrayList *list, void *item)
 {
-	if (list->current_size + 1 == list->max_size)
+	if (list->current_size == list->max_size)
 	{
 		list->max_size = list->max_size + STEP;
-		list->stuff = realloc(list->stuff, sizeof(void *) * list->max_size);
+		resizeArray(list);
 	}
 
 	list->stuff[list->current_size] = item;
@@ -60,8 +65,7 @@ void list_clear_with_remover(ArrayList *list, void (*remover)(void *))
 
 	list->current_size = 0;
 	list->max_size = STEP;
-	list->stuff = realloc(list->stuff, sizeof(void *) * list->max_size);
-
+	resizeArray(list);
 }
 
 void list_clear(ArrayList *list)
@@ -85,6 +89,14 @@ void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void *
 	}
 
 	list->current_size--;
+
+	if (list->current_size % STEP == 0)
+	{
+		//Resize array
+		list->max_size = list->max_size - STEP;
+		resizeArray(list);
+	}
+
 
 }
 

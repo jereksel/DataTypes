@@ -2,6 +2,8 @@
 #include <ArrayList.h>
 #include <stdlib.h>
 
+#define assertEqual(a, b)  do { if (a != b) exit(1); } while ( 0 )
+
 typedef struct integer Integer;
 
 struct integer
@@ -22,28 +24,38 @@ Integer *getFromList(ArrayList *list, int id)
 	return list_get(list, id);
 }
 
-void assertEqual(int num1, int num2)
-{
-	if (num1 != num2)
-	{
-		exit(1);
-	}
-}
-
 int main()
 {
 
 	ArrayList *list = list_create();
+	list_add(list, integerWithNumber(0));
 	list_add(list, integerWithNumber(1));
 	list_add(list, integerWithNumber(2));
+	list_add(list, integerWithNumber(3));
+	list_add(list, integerWithNumber(4));
 
-	assertEqual(1, getFromList(list, 0)->number);
+	assertEqual(5, list->current_size);
+	assertEqual(5, list->max_size);
 
-	list_delete_id(list, 0);
+	list_add(list, integerWithNumber(5));
 
-	assertEqual(2, getFromList(list, 0)->number);
+	assertEqual(6, list->current_size);
+	assertEqual(10, list->max_size);
+
+	assertEqual(0, getFromList(list, 0)->number);
+	assertEqual(1, getFromList(list, 1)->number);
+	assertEqual(2, getFromList(list, 2)->number);
+
+	list_delete_id(list, 2);
+
+	assertEqual(0, getFromList(list, 0)->number);
+	assertEqual(1, getFromList(list, 1)->number);
+	assertEqual(3, getFromList(list, 2)->number);
 
 
-	//printf("Hello World");
+	assertEqual(5, list->current_size);
+	assertEqual(5, list->max_size);
+
+
 	return 0;
 }
