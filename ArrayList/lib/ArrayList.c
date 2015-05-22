@@ -8,12 +8,12 @@ void basicRemover(void *item)
 	free(item);
 }
 
-void resizeArray(ArrayList *list)
+void resizeArrayList(ArrayList *list)
 {
 	list->stuff = realloc(list->stuff, sizeof(void *) * list->max_size);
 }
 
-ArrayList *list_create()
+ArrayList *array_list_create()
 {
 	ArrayList *list = malloc(sizeof(ArrayList));
 
@@ -23,23 +23,23 @@ ArrayList *list_create()
 	return list;
 }
 
-void list_add(ArrayList *list, void *item)
+void array_list_add(ArrayList *list, void *item)
 {
 	if (list->current_size == list->max_size)
 	{
 		list->max_size = list->max_size + STEP;
-		resizeArray(list);
+		resizeArrayList(list);
 	}
 
 	list->stuff[list->current_size] = item;
 	list->current_size++;
 }
 
-int list_find(ArrayList *list, void *item)
+int array_list_find(ArrayList *list, void *item)
 {
 	for (int i = 0; i < list->current_size; i++)
 	{
-		if (list_get(list, i) == item)
+		if (array_list_get(list, i) == item)
 		{
 			return i;
 		}
@@ -49,13 +49,13 @@ int list_find(ArrayList *list, void *item)
 }
 
 
-void *list_get(ArrayList *list, int id)
+void *array_list_get(ArrayList *list, int id)
 {
 	return list->stuff[id];
 }
 
 
-void list_clear_with_remover(ArrayList *list, void (*remover)(void *))
+void array_list_clear_with_remover(ArrayList *list, void (*remover)(void *))
 {
 
 	for (int i = 0; i < list->current_size; i++)
@@ -65,15 +65,15 @@ void list_clear_with_remover(ArrayList *list, void (*remover)(void *))
 
 	list->current_size = 0;
 	list->max_size = STEP;
-	resizeArray(list);
+	resizeArrayList(list);
 }
 
-void list_clear(ArrayList *list)
+void array_list_clear(ArrayList *list)
 {
-	list_clear_with_remover(list, basicRemover);
+	array_list_clear_with_remover(list, basicRemover);
 }
 
-void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void *))
+void array_list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void *))
 {
 
 	if (id >= list->current_size)
@@ -94,15 +94,14 @@ void list_delete_id_with_remover(ArrayList *list, int id, void (*remover)(void *
 	{
 		//Resize array
 		list->max_size = list->max_size - STEP;
-		resizeArray(list);
+		resizeArrayList(list);
 	}
 
 
 }
 
-
-void list_delete_id(ArrayList *list, int id)
+void array_list_delete_id(ArrayList *list, int id)
 {
-	list_delete_id_with_remover(list, id, basicRemover);
+	array_list_delete_id_with_remover(list, id, basicRemover);
 }
 

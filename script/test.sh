@@ -3,4 +3,7 @@
 ./build/bin/ArrayListTest
 exit1=$?
 
-exit $(($exit1))
+./build/bin/StackTest
+exit2=$?
+
+exit $(($exit1+$exit2))
